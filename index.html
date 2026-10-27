@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#071120" />
+  <title>JIMBOSS - Bitácora TI | Amilkar Jiménez</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * { -webkit-tap-highlight-color: transparent; }
+    body {
+      background-color: #071120;
+      color: #f1f5f9;
+      font-family: 'Inter', sans-serif;
+      user-select: none;
+    }
+    .signature-font { font-family: 'Dancing Script', cursive; }
+    .jimboss-gradient { background: linear-gradient(135deg, #0b1c36 0%, #071120 100%); }
+    .jimboss-card {
+      background: linear-gradient(180deg, #0d213f 0%, #081529 100%);
+      border: 1px solid rgba(0, 168, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between pb-24">
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <div class="w-full max-w-md mx-auto space-y-3 p-3">
+
+    <!-- ENCABEZADO JIMBOSS -->
+    <header class="jimboss-gradient border border-[#00a8ff]/30 rounded-2xl px-4 py-3 flex items-center justify-between shadow-xl">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl bg-[#040b16] border border-[#00a8ff]/40 flex items-center justify-center shadow-inner">
+          <svg class="w-8 h-8" viewBox="0 0 140 90" fill="none">
+            <path d="M36 68 L26 32 L52 52 L70 14 L88 52 L114 32 L104 68 Z" stroke="url(#gradHeader)" stroke-width="8" stroke-linejoin="round" fill="none"/>
+            <defs>
+              <linearGradient id="gradHeader" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#00a8ff"/>
+                <stop offset="50%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#f59e0b"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-base font-black tracking-wider"><span class="text-[#00a8ff]">JIM</span><span class="text-white">BOSS</span></h1>
+          <p class="text-[11px] text-slate-300 font-semibold">Amilkar Jiménez</p>
+        </div>
+      </div>
+      <div class="flex gap-1.5">
+        <button onclick="cambiarVista('anotar')" class="bg-[#00a8ff] text-[#071120] px-3 py-1.5 rounded-xl text-xs font-black shadow">➕ Anotar</button>
+        <button onclick="cambiarVista('bitacora')" class="bg-slate-800 text-slate-200 px-3 py-1.5 rounded-xl text-xs font-bold">📋 Mes</button>
+        <button onclick="cambiarVista('reportes')" class="bg-amber-500/20 text-amber-400 border border-amber-500/40 px-2.5 py-1.5 rounded-xl text-xs font-bold">🤖 IA</button>
+      </div>
+    </header>
+
+    <!-- ==========================================
+         VENTANA DE ANOTACIÓN RÁPIDA (TU WIDGET PRINCIPAL)
+         ========================================== -->
+    <section id="seccion-anotar" class="jimboss-card rounded-3xl p-4 shadow-2xl space-y-3.5">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-full bg-[#00a8ff]/20 border border-[#00a8ff] flex items-center justify-center text-[#00a8ff] font-black text-xs">+</div>
+          <div>
+            <h2 class="text-xs font-extrabold uppercase tracking-wider text-white">Anotación Rápida de Soporte</h2>
+            <p class="text-[10px] text-slate-400">Registra lo que hiciste en segundos; yo lo redactaré formalmente.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Área o Departamento -->
+      <div>
+        <label class="text-[11px] font-bold text-slate-300 block mb-1">Área / Departamento o Usuario atendido *</label>
+        <input id="input-area" type="text" placeholder="Ej. Administración - María Gómez / Recepción / Almacén" class="w-full bg-[#050d1a] border border-slate-700 focus:border-[#00a8ff] rounded-xl px-3 py-2.5 text-xs text-white outline-none" />
+      </div>
+
+      <!-- Categorías -->
+      <div>
+        <label class="text-[11px] font-bold text-slate-300 block mb-1">Categoría del Soporte</label>
+        <div class="grid grid-cols-2 gap-1.5 text-[11px]">
+          <button type="button" onclick="seleccionarCat('Redes / MikroTik')" id="cat-Redes" class="cat-btn bg-[#00a8ff]/25 border-2 border-[#00a8ff] text-white py-2 px-2.5 rounded-xl font-bold text-left">🌐 Redes / MikroTik</button>
+          <button type="button" onclick="seleccionarCat('Impresoras / Canon')" id="cat-Impresoras" class="cat-btn bg-[#050d1a] border border-slate-700 text-slate-300 py-2 px-2.5 rounded-xl font-medium text-left">🖨️ Impresoras</button>
+          <button type="button" onclick="seleccionarCat('Cámaras / CCTV')" id="cat-Cámaras" class="cat-btn bg-[#050d1a] border border-slate-700 text-slate-300 py-2 px-2.5 rounded-xl font-medium text-left">📹 Cámaras / CCTV</button>
+          <button type="button" onclick="seleccionarCat('Telefonía / PBX')" id="cat-Telefonía" class="cat-btn bg-[#050d1a] border border-slate-700 text-slate-300 py-2 px-2.5 rounded-xl font-medium text-left">☎️ Telefonía / PBX</button>
+          <button type="button" onclick="seleccionarCat('Hardware / PC')" id="cat-Hardware" class="cat-btn bg-[#050d1a] border border-slate-700 text-slate-300 py-2 px-2.5 rounded-xl font-medium text-left">🔧 Hardware / PC</button>
+          <button type="button" onclick="seleccionarCat('Sistemas / Server')" id="cat-Sistemas" class="cat-btn bg-[#050d1a] border border-slate-700 text-slate-300 py-2 px-2.5 rounded-xl font-medium text-left">🖥️ Sistemas / Server</button>
+        </div>
+      </div>
+
+      <!-- Nota rápida -->
+      <div>
+        <label class="text-[11px] font-bold text-slate-300 block mb-1">Nota rápida de lo realizado *</label>
+        <textarea id="input-desc" rows="3" placeholder="Ej. Cambio de tóner y limpieza de rodillos en impresora Canon, o reinicio de cola de impresión y ajuste de IP en MikroTik..." class="w-full bg-[#050d1a] border border-slate-700 focus:border-[#00a8ff] rounded-xl p-2.5 text-xs text-white outline-none"></textarea>
+      </div>
+
+      <!-- Estado y Fecha -->
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="text-[10px] font-bold text-slate-300 block mb-1">Estado</label>
+          <div class="flex gap-1">
+            <button type="button" onclick="seleccionarEstado('Resuelto')" id="est-Resuelto" class="est-btn flex-1 bg-emerald-500/20 border border-emerald-500 text-emerald-300 py-1.5 rounded-lg text-[10px] font-bold">Resuelto</button>
+            <button type="button" onclick="seleccionarEstado('En proceso')" id="est-En" class="est-btn flex-1 bg-[#050d1a] border border-slate-700 text-slate-400 py-1.5 rounded-lg text-[10px] font-medium">Proceso</button>
+          </div>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-300 block mb-1">Fecha y Hora</label>
+          <input id="input-fecha-hora" type="text" readonly class="w-full bg-[#050d1a] border border-slate-700 text-slate-300 rounded-xl px-2.5 py-1.5 text-[11px] text-center" />
+        </div>
+      </div>
+
+      <!-- Botones de acción inferior -->
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button onclick="guardarSoporte(true)" class="py-3 rounded-xl font-bold text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700">
+          Guardar y anotar otro
+        </button>
+        <button onclick="guardarSoporte(false)" class="py-3 rounded-xl font-black text-xs bg-gradient-to-r from-[#00a8ff] to-amber-500 text-[#071120] shadow-lg">
+          Guardar Soporte
+        </button>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE BITÁCORA MENSUAL -->
+    <section id="seccion-bitacora" class="hidden jimboss-card rounded-3xl p-4 space-y-3">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+        <h2 class="text-xs font-extrabold uppercase tracking-wider text-amber-400">📋 Bitácora y Tareas del Mes</h2>
+        <input id="filtro-mes" type="month" onchange="renderizarBitacora()" class="bg-[#050d1a] border border-slate-700 text-xs text-white rounded-lg px-2 py-1" />
+      </div>
+      <div id="lista-bitacora" class="space-y-2 max-h-96 overflow-y-auto"></div>
+    </section>
+
+    <!-- SECCIÓN DE REPORTE IA CON FIRMA -->
+    <section id="seccion-reportes" class="hidden jimboss-card rounded-3xl p-4 space-y-3">
+      <h2 class="text-xs font-extrabold uppercase tracking-wider text-[#00a8ff]">🤖 Informes Técnicos con Gemini IA</h2>
+      <p class="text-[11px] text-slate-300">Genera tu reporte formal con tu firma institucional:</p>
+      <div class="grid grid-cols-3 gap-2">
+        <button onclick="generarReporte('Diario')" class="bg-[#050d1a] border border-[#00a8ff] py-2.5 rounded-xl text-xs font-bold text-[#00a8ff]">📅 Diario</button>
+        <button onclick="generarReporte('Semanal')" class="bg-[#050d1a] border border-slate-600 py-2.5 rounded-xl text-xs font-bold text-white">📊 Semanal</button>
+        <button onclick="generarReporte('Mensual')" class="bg-[#050d1a] border border-amber-500 py-2.5 rounded-xl text-xs font-bold text-amber-400">🏆 Mensual</button>
+      </div>
+      <div id="caja-resultado-ia" class="hidden space-y-2 pt-2">
+        <div id="texto-ia" class="bg-[#040912] border border-slate-700 rounded-xl p-3 text-xs text-slate-200 whitespace-pre-wrap max-h-60 overflow-y-auto"></div>
+        <div class="flex gap-2">
+          <button onclick="copiarReporte()" class="flex-1 bg-[#00a8ff] text-[#071120] font-black py-2.5 rounded-xl text-xs">📋 Copiar</button>
+          <button onclick="enviarWhatsApp()" class="flex-1 bg-emerald-500 text-[#071120] font-black py-2.5 rounded-xl text-xs">📲 WhatsApp</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIRMA OFICIAL AL PIE -->
+    <footer class="mt-4 px-4 py-4 border-t border-slate-800 text-center">
+      <p class="signature-font text-2xl text-amber-400">Amilkar Jiménez</p>
+      <p class="text-[9px] font-bold tracking-widest text-[#00a8ff]">JIMBOSS • SOPORTE E INFRAESTRUCTURA TI</p>
+    </footer>
+
+  </div>
+
+  <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-emerald-500 text-[#071120] font-black text-xs px-4 py-2 rounded-full shadow-xl">
+    ✅ Guardado correctamente
+  </div>
+
+  <script>
+    let catSeleccionada = 'Redes / MikroTik';
+    let estadoSeleccionado = 'Resuelto';
+    let soportes = JSON.parse(localStorage.getItem('jimboss_data_v3') || '[]');
+
+    // Actualizar fecha y hora actual en el campo
+    function actualizarFechaHora() {
+      const ahora = new Date();
+      const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+      document.getElementById('input-fecha-hora').value = ahora.toLocaleDateString('es-VE', options);
+    }
+    actualizarFechaHora();
+    setInterval(actualizarFechaHora, 60000);
+    document.getElementById('filtro-mes').value = new Date().toISOString().slice(0, 7);
+
+    function mostrarToast(txt) {
+      const t = document.getElementById('toast');
+      t.innerText = txt;
+      t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 2200);
+    }
+
+    function seleccionarCat(cat) {
+      catSeleccionada = cat;
+      ['Redes', 'Impresoras', 'Cámaras', 'Telefonía', 'Hardware', 'Sistemas'].forEach(c => {
+        const btn = document.getElementById('cat-' + c.split(' ')[0]);
+        if (btn) {
+          btn.className = (c === cat.split(' ')[0] || cat.includes(c))
+            ? 'cat-btn bg-[#00a8ff]/25 border-2 border-[#00a8ff] text-white py-2 px-2.5 rounded-xl font-bold text-left'
+            : 'cat-btn bg-[#050d1a] border border-slate-700 text-slate-300 py-2 px-2.5 rounded-xl font-medium text-left';
+        }
+      });
+    }
+
+    function seleccionarEstado(est) {
+      estadoSeleccionado = est;
+      document.querySelectorAll('.est-btn').forEach(b => {
+        b.className = 'est-btn flex-1 bg-[#050d1a] border border-slate-700 text-slate-400 py-1.5 rounded-lg text-[10px] font-medium';
+      });
+      if (est === 'Resuelto') {
+        document.getElementById('est-Resuelto').className = 'est-btn flex-1 bg-emerald-500/20 border border-emerald-500 text-emerald-300 py-1.5 rounded-lg text-[10px] font-bold';
+      } else {
+        document.getElementById('est-En').className = 'est-btn flex-1 bg-amber-500/20 border border-amber-500 text-amber-300 py-1.5 rounded-lg text-[10px] font-bold';
+      }
+    }
+
+    function guardarSoporte(reiniciar) {
+      const area = document.getElementById('input-area').value.trim();
+      const desc = document.getElementById('input-desc').value.trim();
+      if (!area || !desc) {
+        mostrarToast('⚠️ Escribe el área y la nota del soporte');
+        return;
+      }
+      const nuevo = {
+        id: Date.now(),
+        fechaISO: new Date().toISOString().split('T')[0],
+        hora: new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit' }),
+        area,
+        categoria: catSeleccionada,
+        descripcion: desc,
+        estado: estadoSeleccionado
+      };
+      soportes.unshift(nuevo);
+      localStorage.setItem('jimboss_data_v3', JSON.stringify(soportes));
+      document.getElementById('input-area').value = '';
+      document.getElementById('input-desc').value = '';
+      mostrarToast('✅ Soporte registrado en JIMBOSS');
+      if (!reiniciar) {
+        cambiarVista('bitacora');
+      }
+    }
+
+    function cambiarVista(vista) {
+      ['anotar', 'bitacora', 'reportes'].forEach(v => {
+        document.getElementById('seccion-' + v).classList.toggle('hidden', v !== vista);
+      });
+      if (vista === 'bitacora') renderizarBitacora();
+    }
+
+    function renderizarBitacora() {
+      const mes = document.getElementById('filtro-mes').value;
+      const filtrados = soportes.filter(s => !mes || s.fechaISO.startsWith(mes));
+      const cont = document.getElementById('lista-bitacora');
+      if (filtrados.length === 0) {
+        cont.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">No hay soportes en este mes.</p>';
+        return;
+      }
+      cont.innerHTML = filtrados.map(s => `
+        <div class="bg-[#050d1a] border border-slate-800 rounded-xl p-3 flex justify-between items-start">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-bold text-[#00a8ff] bg-[#00a8ff]/20 px-1.5 py-0.5 rounded">${s.categoria}</span>
+              <span class="text-[10px] text-emerald-400 font-bold">${s.estado}</span>
+            </div>
+            <p class="text-xs font-bold text-white">📍 ${s.area}</p>
+            <p class="text-xs text-slate-300">${s.descripcion}</p>
+            <span class="text-[9px] text-slate-500">📅 ${s.fechaISO} • ${s.hora}</span>
+          </div>
+          <button onclick="borrar(${s.id})" class="text-xs text-red-400 p-1">🗑️</button>
+        </div>
+      `).join('');
+    }
+
+    function borrar(id) {
+      soportes = soportes.filter(s => s.id !== id);
+      localStorage.setItem('jimboss_data_v3', JSON.stringify(soportes));
+      renderizarBitacora();
+      mostrarToast('🗑️ Eliminado');
+    }
+
+    function generarReporte(periodo) {
+      const hoy = new Date().toISOString().split('T')[0];
+      const mes = hoy.slice(0, 7);
+      const hace7 = new Date(Date.now() - 7*86400000).toISOString().split('T')[0];
+
+      let lista = soportes;
+      if (periodo === 'Diario') lista = soportes.filter(s => s.fechaISO === hoy);
+      if (periodo === 'Semanal') lista = soportes.filter(s => s.fechaISO >= hace7);
+      if (periodo === 'Mensual') lista = soportes.filter(s => s.fechaISO.startsWith(mes));
+
+      if (lista.length === 0) {
+        mostrarToast('⚠️ No hay soportes para este reporte');
+        return;
+      }
+
+      let texto = `👑 *JIMBOSS - INFORME DE GESTIÓN TÉCNICA (${periodo.toUpperCase()})*\nFecha: ${hoy}\nTotal incidencias: ${lista.length}\n────────────────────\n\n`;
+      lista.forEach((s, idx) => {
+        texto += `${idx + 1}. *[${s.categoria}]* - ${s.area}\n   • Labor: ${s.descripcion}\n   • Estado: ${s.estado} (${s.hora})\n\n`;
+      });
+      texto += `────────────────────\nAtentamente,\n*Amilkar Jiménez*\nEspecialista en Soporte e Infraestructura TI | JIMBOSS`;
+
+      document.getElementById('caja-resultado-ia').classList.remove('hidden');
+      document.getElementById('texto-ia').innerText = texto;
+    }
+
+    function copiarReporte() {
+      navigator.clipboard.writeText(document.getElementById('texto-ia').innerText);
+      mostrarToast('📋 Copiado al portapapeles');
+    }
+
+    function enviarWhatsApp() {
+      const txt = encodeURIComponent(document.getElementById('texto-ia').innerText);
+      window.open(`https://wa.me/?text=${txt}`, '_blank');
+    }
+  </script>
+</body>
+</html>
